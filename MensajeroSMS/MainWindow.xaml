@@ -7,6 +7,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -23,8 +24,14 @@
 
         </Grid>
         
+        <TextBox Grid.Row="1"
+                   Text="{Binding Message}"
+                   Height="60">
+            
+        </TextBox>
+        
         <Grid
-            Grid.Row="1">
+            Grid.Row="2">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -59,7 +66,7 @@
             
         </Grid>
 
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="3">
 
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>

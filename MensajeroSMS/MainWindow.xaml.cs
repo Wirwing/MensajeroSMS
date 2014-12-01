@@ -28,6 +28,8 @@ namespace MensajeroSMS
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        private SmsMasivoService smsApi;
+
         private ObservableCollection<Contacto> contacts;
 
         public ObservableCollection<Contacto> Contacts
@@ -36,14 +38,26 @@ namespace MensajeroSMS
             set { contacts = value; }
         }
 
+        private String message;
+        public String Message
+        {
+            get { return message; }
+            set { message = value; }
+        }
+
         public MainWindow()
         {
             contacts = new ObservableCollection<Contacto>();
+
+            smsApi = new SmsMasivoService();
+
             InitializeComponent();
         }
 
         private void Load_Contacts_Click(object sender, RoutedEventArgs e)
         {
+           
+                        
             // Configure open file dialog box 
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.DefaultExt = ".xlsx"; // Default file extension 
@@ -93,19 +107,21 @@ namespace MensajeroSMS
 
             var selected = contacts.Where(contact => contact.Selected == true).ToList();
 
-            StringBuilder builder = new StringBuilder();
+            String numbers = NumberFetcher.FromContacts(selected);
 
-            for(int i = 0; i < selected.Count; i++){
+            BatchResponse response = smsApi.SendMessageToNumbers(message, numbers);
 
-                builder.Append(selected[i].Cellphone);
+            logger.Info(response);
 
-                if (i != selected.Count - 1)
-                    builder.Append(",");
-
-            }
-
-            String numbers = builder.ToString();
-            logger.Info(numbers);
+            //try
+            //{
+            //    Credit credit = smsApi.GetSaldo();
+            //    logger.Info(credit.Quantity);
+            //}
+            //catch (ApplicationException exception)
+            //{
+            //    logger.Info(exception.Message);
+            //}
 
         }
 
