@@ -90,8 +90,22 @@ namespace MensajeroSMS
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            List<Contacto> selected = contacts.Where(contact => contact.Selected == true).ToList();
-            selected.ForEach(contact => logger.Info(contact.Name));
+
+            var selected = contacts.Where(contact => contact.Selected == true).ToList();
+
+            StringBuilder builder = new StringBuilder();
+
+            for(int i = 0; i < selected.Count; i++){
+
+                builder.Append(selected[i].Cellphone);
+
+                if (i != selected.Count - 1)
+                    builder.Append(",");
+
+            }
+
+            String numbers = builder.ToString();
+            logger.Info(numbers);
 
         }
 
