@@ -1,31 +1,26 @@
-﻿using MensajeroSMS.Model;
-using NPOI.SS.UserModel;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MensajeroSMS.Model;
+using NPOI.SS.UserModel;
 
 namespace MensajeroSMS.Service
 {
-    class ExcelReader
+    internal class ExcelReader
     {
-
-        private IWorkbook workBook;
+        private readonly IWorkbook workBook;
 
         public ExcelReader(String fileName)
         {
-            FileStream stream = new FileStream(fileName, FileMode.Open);
+            var stream = new FileStream(fileName, FileMode.Open);
             workBook = WorkbookFactory.Create(stream);
             stream.Close();
         }
 
         public List<Contacto> readData()
         {
-
-            List<Contacto> contactos = new List<Contacto>();
+            var contactos = new List<Contacto>();
 
             Contacto contact;
 
@@ -43,7 +38,6 @@ namespace MensajeroSMS.Service
 
             while (rowEnumator.MoveNext())
             {
-
                 currentRow = rowEnumator.Current as IRow;
 
                 cell = currentRow.GetCell(0, MissingCellPolicy.RETURN_BLANK_AS_NULL);
@@ -61,12 +55,9 @@ namespace MensajeroSMS.Service
 
                 contact = new Contacto(name, cellphone);
                 contactos.Add(contact);
-
             }
 
             return contactos;
-
         }
-
     }
 }

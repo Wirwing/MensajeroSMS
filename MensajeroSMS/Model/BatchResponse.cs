@@ -1,22 +1,17 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace MensajeroSMS.Model
 {
-    class BatchResponse
+    public class BatchResponse
     {
-
         [JsonProperty("respuestas")]
         public List<SingleResponse> Responses { get; set; }
-
     }
 
-    class SingleResponse{
-
+    public class SingleResponse
+    {
         [JsonProperty("estatus")]
         public String Status { get; set; }
 
@@ -28,7 +23,5 @@ namespace MensajeroSMS.Model
 
         [JsonProperty("numcelular")]
         public String CellNumber { get; set; }
-
     }
-
 }
