@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -120,5 +121,11 @@ namespace MensajeroSMS
             btnSendMessage.IsEnabled = length > 0 && length < 140;
 
         }
+
+        private void AddContact_Click(object sender, RoutedEventArgs e)
+        {
+            Contacts.Add(new Contacto("", ""));
+        }
+     
     }
 }
