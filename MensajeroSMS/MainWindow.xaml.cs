@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using MensajeroSMS.Model;
+using MensajeroSMS.Model.MasMensajes;
 using MensajeroSMS.Model.SmsMasivos;
 using MensajeroSMS.Service;
 using Microsoft.Win32;
@@ -19,7 +21,7 @@ namespace MensajeroSMS
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly SmsMasivoService smsApi;
+        private readonly MasMensajesService service;
 
         public ObservableCollection<Contacto> Contacts { get; set; }
 
@@ -32,7 +34,7 @@ namespace MensajeroSMS
             ShowProgress = false;
 
             Contacts = new ObservableCollection<Contacto>();
-            smsApi = new SmsMasivoService();
+            service = new MasMensajesService();
 
             InitializeComponent();
 
@@ -46,8 +48,18 @@ namespace MensajeroSMS
         private void getSaldo()
         {
 
-            var credit = smsApi.GetSaldo();
-            //TbMessage.Text = "Mensajes disponibles: " + credit.Quantity;
+            var username = Properties.Settings.Default.Username;
+            var password = Properties.Settings.Default.Password;
+
+            var sms = new SMSWSS10 { USER = username, PASS = password };
+
+            var credit = service.GetSaldo(sms);
+
+            var line = credit.Replace("\r", "").Replace("\n", "");
+
+            Debug.WriteLine(line);
+
+            TbMessage.Text = line;
 
         }
 
@@ -103,11 +115,18 @@ namespace MensajeroSMS
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
+            
             List<Contacto> selected = Contacts.Where(contact => contact.Selected).ToList();
+            var numbers = selected.Select(contacto => contacto.Cellphone).ToList();
 
-            string numbers = NumberFetcher.FromContacts(selected);
+            var username = Properties.Settings.Default.Username;
+            var password = Properties.Settings.Default.Password;
 
-            BatchResponse response = smsApi.SendMessageToNumbers(Message, numbers);
+            var sms = new SMSWSS10 { USER = username, PASS = password };
+
+            sms.SetBatchMessage(numbers, Message);
+
+            service.BatchSend(sms);
 
             getSaldo();
 
@@ -130,6 +149,7 @@ namespace MensajeroSMS
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();
+            getSaldo();
         }
     }
 }

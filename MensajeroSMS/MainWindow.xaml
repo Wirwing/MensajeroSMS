@@ -207,7 +207,7 @@
 
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="TbMessage"/>
+                <TextBlock Name="TbMessage" Text="Chdiasdioajdasio dja dioasjdio ajdioasj d"/>
             </StatusBarItem>
         </StatusBar>
 
