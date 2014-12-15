@@ -16,39 +16,48 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <Grid Margin="30">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Mensajes" 
+                                   FontSize="20"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="30">
 
-            <Grid Margin="0, 0, 0, 16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Button Content="Cargar datos de Excel" VerticalAlignment="Top" 
+                    <Grid Margin="0, 0, 0, 16">
+
+                        <Button Content="Cargar datos de Excel" VerticalAlignment="Top" 
                     Click="Load_Contacts_Click" Height="28" 
                     HorizontalAlignment="Left" 
                     Width="151"/>
 
-            </Grid>
+                    </Grid>
 
-            <Grid Grid.Row="1">
+                    <Grid Grid.Row="1">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <TextBlock 
+                        <TextBlock 
                 Grid.Row="0"
                 TextAlignment="Center"
                 x:Name="LoadedContacts"
                 Margin="0, 0, 0 10"
                 Text="Contactos Cargados" FontWeight="Bold" />
 
-                <DataGrid 
+                        <DataGrid 
                     x:Name="dTContacts"
                 Grid.Row="1"
                 AutoGenerateColumns="False" 
@@ -57,49 +66,49 @@
                 CanUserSortColumns="True"
                 ItemsSource="{Binding Contacts}">
 
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=LostFocus}" Width="Auto">
-                            <DataGridCheckBoxColumn.Header>
-                                <CheckBox Name="chkSelectAll" IsChecked="true" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
-                        <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                        <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=LostFocus}" Width="Auto">
+                                    <DataGridCheckBoxColumn.Header>
+                                        <CheckBox Name="chkSelectAll" IsChecked="true" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                                    </DataGridCheckBoxColumn.Header>
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                <StackPanel
+                        <StackPanel
                     Orientation="Horizontal"
                     Grid.Row="2">
-                    <Button
+                            <Button
                     Content="Agregar" 
                     HorizontalAlignment="Left"
                     Width="90"
                     Click="AddContact_Click"
                     Margin="0, 8, 10, 6"/>
-               
-                </StackPanel>
-                
-                
-                
-            </Grid>
 
-            <Grid Grid.Row="2" Margin="0, 16, 0, 16">
+                        </StackPanel>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
 
-                <TextBlock  HorizontalAlignment="Left"  TextWrapping="Wrap"  Text="Mensaje:"/>
+                    </Grid>
 
-                <TextBox 
+                    <Grid Grid.Row="2" Margin="0, 16, 0, 16">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock  HorizontalAlignment="Left"  TextWrapping="Wrap"  Text="Mensaje:"/>
+
+                        <TextBox 
                          Grid.Row="1" 
                          x:Name="tbMessageArea"
                          Grid.Column="0" 
@@ -107,7 +116,7 @@
                          Text="{Binding Message}" 
                          TextChanged="tbMessageArea_TextChanged"/>
 
-                <Button 
+                        <Button 
                     x:Name="btnSendMessage"
                     Grid.Column="1" 
                         Grid.Row="1" 
@@ -121,17 +130,61 @@
                         HorizontalAlignment="Right" 
                         Width="117"/>
 
-                <TextBlock  
+                        <TextBlock  
                     x:Name="TbCharactersLef"
                     Grid.Row="2"
                     HorizontalAlignment="Left"  
                     TextWrapping="Wrap"/>
 
-            </Grid>
+                    </Grid>
 
 
 
-        </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Configuración" FontSize="20"/>
+                    </StackPanel>
+                </TabItem.Header>
+                
+                <Grid
+                    Margin="80">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="Configuración" FontWeight="Bold" FontSize="20"/>
+                    <TextBlock Grid.Row="1" Text="Ingresa tu usuario y contraseña del servicio www.masmensajes.com.mx" Margin="0,16,0,16"/>
+                    
+                    <TextBlock Grid.Row="2" Text="Nombre de usuario:" HorizontalAlignment="Right" Margin="0,0,8,0"/>
+                    <TextBox Grid.Row="2" Grid.Column="1"/>
+                    
+                    <TextBlock Grid.Row="3" Text="Password:" HorizontalAlignment="Right" Margin="0,8,8,0"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 8, 0, 0"/>
+                    
+                    <Button 
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="100"
+                        Margin="0,16,0,0"
+                        Content="Guardar"/>
+
+                </Grid>
+                
+            </TabItem>
+            
+        </TabControl>
 
         <StatusBar Grid.Row="1">
 
