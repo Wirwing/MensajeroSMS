@@ -78,8 +78,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\BatchResponse.cs" />
-    <Compile Include="Model\Credit.cs" />
+    <Compile Include="Model\SmsMasivos\BatchResponse.cs" />
+    <Compile Include="Model\Chido.cs" />
+    <Compile Include="Model\SmsMasivos\Credit.cs" />
     <Compile Include="Service\ExcelReader.cs" />
     <Compile Include="Service\NumberFetcher.cs" />
     <Compile Include="Service\SmsMasivoService.cs" />
@@ -129,6 +130,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Model\MasMensajes\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

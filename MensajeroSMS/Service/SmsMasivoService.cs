@@ -1,5 +1,6 @@
 ﻿using System;
 using MensajeroSMS.Model;
+using MensajeroSMS.Model.SmsMasivos;
 using Newtonsoft.Json;
 using RestSharp;
 

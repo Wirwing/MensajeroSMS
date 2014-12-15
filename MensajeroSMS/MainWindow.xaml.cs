@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using MensajeroSMS.Model;
+using MensajeroSMS.Model.SmsMasivos;
 using MensajeroSMS.Service;
 using Microsoft.Win32;
 using NLog;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace MensajeroSMS.Model
+namespace MensajeroSMS.Model.SmsMasivos
 {
     internal class Credit
     {
