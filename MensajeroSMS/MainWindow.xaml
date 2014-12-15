@@ -168,16 +168,17 @@
                     <TextBlock Grid.Row="1" Text="Ingresa tu usuario y contraseña del servicio www.masmensajes.com.mx" Margin="0,16,0,16"/>
                     
                     <TextBlock Grid.Row="2" Text="Nombre de usuario:" HorizontalAlignment="Right" Margin="0,0,8,0"/>
-                    <TextBox Grid.Row="2" Grid.Column="1"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.Username}"/>
                     
                     <TextBlock Grid.Row="3" Text="Password:" HorizontalAlignment="Right" Margin="0,8,8,0"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 8, 0, 0"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 8, 0, 0" Text="{Binding Source={StaticResource Settings}, Path=Default.Password}"/>
                     
                     <Button 
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="100"
                         Margin="0,16,0,0"
+                        Click="SaveSettings_Click"
                         Content="Guardar"/>
 
                 </Grid>

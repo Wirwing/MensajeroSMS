@@ -126,6 +126,10 @@ namespace MensajeroSMS
         {
             Contacts.Add(new Contacto("", ""));
         }
-     
+
+        private void SaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
     }
 }
