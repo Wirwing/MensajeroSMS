@@ -20,39 +20,23 @@ namespace MensajeroSMS
 
         private readonly SmsMasivoService smsApi;
 
-        private ObservableCollection<Contacto> _contacts;
+        public ObservableCollection<Contacto> Contacts { get; set; }
 
-        private ObservableCollection<SingleResponse> _responses;
+        public bool ShowProgress { get; set; }
 
-        private String message;
-
-        public ObservableCollection<Contacto> Contacts
-        {
-            get { return _contacts; }
-            set { _contacts = value; }
-        }
-
-        public String Message
-        {
-            get { return message; }
-            set { message = value; }
-        }
-
-        public ObservableCollection<SingleResponse> Responses
-        {
-            get { return _responses; }
-            set { _responses = value; }
-        }
+        public string Message { get; set; }
 
         public MainWindow()
         {
+            ShowProgress = false;
 
-            _contacts = new ObservableCollection<Contacto>();
-            _responses = new ObservableCollection<SingleResponse>();
-
+            Contacts = new ObservableCollection<Contacto>();
             smsApi = new SmsMasivoService();
 
             InitializeComponent();
+
+            btnSendMessage.IsEnabled = false;
+            TbCharactersLef.Text = 0.ToString();
 
             getSaldo();
 
@@ -61,14 +45,15 @@ namespace MensajeroSMS
         private void getSaldo()
         {
 
-            Credit credit = smsApi.GetSaldo();
-            TbCreditAvailable.Text = "Mensajes disponibles: " + credit.Quantity;
+            var credit = smsApi.GetSaldo();
+            //TbMessage.Text = "Mensajes disponibles: " + credit.Quantity;
 
         }
 
 
         private void Load_Contacts_Click(object sender, RoutedEventArgs e)
         {
+
             // Configure open file dialog box 
             var dlg = new OpenFileDialog();
             dlg.DefaultExt = ".xlsx"; // Default file extension 
@@ -80,18 +65,23 @@ namespace MensajeroSMS
             // Process open file dialog box results 
             if (result.HasValue && result.Value)
             {
+                widow.IsEnabled = false;
+                ShowProgress = true;
+
                 var reader = new ExcelReader(dlg.FileName);
 
                 List<Contacto> contactsRead = reader.readData();
 
-                _contacts.Clear();
-                contactsRead.ForEach(contact => { _contacts.Add(contact); });
+                Contacts.Clear();
+                contactsRead.ForEach(contact => { Contacts.Add(contact); });
                 LoadedContacts.Text = "Contactos Cargados (" + Contacts.Count + ")";
+
+                widow.IsEnabled = true;
+                ShowProgress = false;
 
             }
 
             
-
         }
 
         private void chkSelectAll_Checked(object sender, RoutedEventArgs e)
@@ -112,26 +102,23 @@ namespace MensajeroSMS
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            List<Contacto> selected = _contacts.Where(contact => contact.Selected).ToList();
+            List<Contacto> selected = Contacts.Where(contact => contact.Selected).ToList();
 
             string numbers = NumberFetcher.FromContacts(selected);
 
-            BatchResponse response = smsApi.SendMessageToNumbers(message, numbers);
-
-            _responses.Clear();
-            response.Responses.ForEach(single => _responses.Add(single));
+            BatchResponse response = smsApi.SendMessageToNumbers(Message, numbers);
 
             getSaldo();
 
-            //try
-            //{
-            //    Credit credit = smsApi.GetSaldo();
-            //    logger.Info(credit.Quantity);
-            //}
-            //catch (ApplicationException exception)
-            //{
-            //    logger.Info(exception.Message);
-            //}
+        }
+
+        private void tbMessageArea_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var length = tbMessageArea.Text.ToCharArray().Length;
+            TbCharactersLef.Text = length.ToString();
+
+            btnSendMessage.IsEnabled = length > 0 && length < 140;
+
         }
     }
 }
