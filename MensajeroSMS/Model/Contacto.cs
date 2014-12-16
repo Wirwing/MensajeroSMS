@@ -38,7 +38,7 @@ namespace MensajeroSMS.Model
         }
 
 
-        public bool validCellphone()
+        public bool ValidCellphone()
         {
             //Accepts only 10 digits, no more no less. (Like Mike's answer)
             var pattern = new Regex(@"(?<!\d)\d{10}(?!\d)");
