@@ -178,7 +178,7 @@ namespace MensajeroSMS
                     var selected = Contacts.Where(contact => contact.Selected).ToList();
                     var numbers = selected.Select(contacto =>
                     {
-                        if (contacto.validCellphone())
+                        if (contacto.ValidCellphone())
                             return contacto.Cellphone;
 
                         throw new Exception("Número invalido para contacto " + contacto.Name);
