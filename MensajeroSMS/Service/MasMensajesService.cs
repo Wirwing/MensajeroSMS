@@ -28,6 +28,16 @@ namespace MensajeroSMS.Service
             request.AddParameter("xml", data.ToXML());
             return Execute(request);
         }
+        public List<Message> GetHistorialMessages(MessageHistory history)
+        {
+            history.SERVICE = MessageHistory.MESSAGES_HISTORY_OP;
+            history.DATA = MessageHistory.ALL_MESSAGES_DATA;
+            var request = new RestRequest("smswss10.php", Method.POST);
+            request.AddParameter("xml", history.ToXML());
+
+            var response = Execute(request);
+            return Message.GetFromResponse(response);
+        }
 
         private String Execute(IRestRequest request)
         {

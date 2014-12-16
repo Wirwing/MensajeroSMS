@@ -78,7 +78,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\MasMensajes\Credit.cs" />
+    <Compile Include="Model\Message.cs" />
+    <Compile Include="Model\MasMensajes\MessageHistory.cs" />
     <Compile Include="Model\MasMensajes\SMSWSS10.cs" />
     <Compile Include="Model\SmsMasivos\BatchResponse.cs" />
     <Compile Include="Model\SmsMasivos\Credit.cs" />

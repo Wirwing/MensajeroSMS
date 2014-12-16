@@ -31,7 +31,6 @@ namespace MensajeroSMS.Model.MasMensajes
 
         public SMSWSS10DATA DATA { get; set; }
 
-
         public String ToXML()
         {
             var document = new XmlDocument();

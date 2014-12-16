@@ -14,12 +14,13 @@ namespace UnitTestProject
     public class MasMensajesServiceTest
     {
 
+        private MasMensajesService service = new MasMensajesService();
+
         [TestMethod]
         public void GetSaldoTest()
         {
 
             var data = new SMSWSS10 { USER = "Wirwing", PASS = "63ac23"};
-            var service = new MasMensajesService();
             var response = service.GetSaldo(data);
             Debug.WriteLine(response);
 
@@ -33,9 +34,21 @@ namespace UnitTestProject
             var message = "Buenos dias, amor :)";
             sms.SetBatchMessage(numbers, message);
 
-            var service = new MasMensajesService();
             var response = service.BatchSend(sms);
             Debug.WriteLine(response);
+
+        }
+
+        [TestMethod]
+        public void GetSentMessagesTest()
+        {
+            var sms = new MessageHistory { USER = "Wirwing", PASS = "63ac23" };
+            var mesages = service.GetHistorialMessages(sms);
+
+            foreach (var message in mesages)
+            {
+                Debug.WriteLine(message.Content + ", " + message.Date + "," + message.Status);
+            }
 
         }
 

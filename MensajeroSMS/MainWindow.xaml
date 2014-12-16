@@ -58,13 +58,13 @@
                 Text="Contactos Cargados" FontWeight="Bold" />
 
                         <DataGrid 
-                    x:Name="dTContacts"
-                Grid.Row="1"
-                AutoGenerateColumns="False" 
-                CanUserResizeColumns="True" 
-                CanUserAddRows="False" 
-                CanUserSortColumns="True"
-                ItemsSource="{Binding Contacts}">
+                            x:Name="dTContacts"
+                            Grid.Row="1"
+                            AutoGenerateColumns="False" 
+                            CanUserResizeColumns="True" 
+                            CanUserAddRows="False" 
+                            CanUserSortColumns="True"
+                            ItemsSource="{Binding Contacts}">
 
                             <DataGrid.Columns>
                                 <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=LostFocus}" Width="Auto">
@@ -142,6 +142,47 @@
 
                 </Grid>
             </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Historial de Mensajes" 
+                                   FontSize="20"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="30">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+
+                        <TextBlock 
+                        Grid.Row="0"
+                        TextAlignment="Center"
+                        Margin="0, 0, 0 10"
+                        Text="Mensajes Enviados" FontWeight="Bold" />
+
+                        <DataGrid 
+                            x:Name="dTSentMessages"
+                            Grid.Row="1"
+                            AutoGenerateColumns="False" 
+                            CanUserResizeColumns="True" 
+                            CanUserAddRows="False" 
+                            CanUserSortColumns="True"
+                            ItemsSource="{Binding SentMessages}">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                </Grid>
+            </TabItem>
+
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
