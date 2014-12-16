@@ -1,6 +1,7 @@
 ﻿<Window x:Class="MensajeroSMS.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="widow"
         Title="Mensajero SMS" Height="620" Width="1024">
@@ -9,55 +10,57 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Window.Resources>
 
-    <Grid>
+    <xctk:BusyIndicator x:Name="BusyIndicator">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
-        </Grid.RowDefinitions>
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
 
 
-        <TabControl>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Mensajes" 
+            <TabControl>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Nuevo Mensaje" 
                                    FontSize="20"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid Margin="30">
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid Margin="30">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                    <Grid Margin="0, 0, 0, 16">
+                        <Grid Margin="0, 0, 0, 16">
 
-                        <Button Content="Cargar datos de Excel" VerticalAlignment="Top" 
+                            <Button Content="Cargar datos de Excel" VerticalAlignment="Top" 
                     Click="Load_Contacts_Click" Height="28" 
                     HorizontalAlignment="Left" 
                     Width="151"/>
 
-                    </Grid>
+                        </Grid>
 
-                    <Grid Grid.Row="1">
+                        <Grid Grid.Row="1">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock 
+                            <TextBlock 
                 Grid.Row="0"
                 TextAlignment="Center"
                 x:Name="LoadedContacts"
                 Margin="0, 0, 0 10"
                 Text="Contactos Cargados" FontWeight="Bold" />
 
-                        <DataGrid 
+                            <DataGrid 
                             x:Name="dTContacts"
                             Grid.Row="1"
                             AutoGenerateColumns="False" 
@@ -66,49 +69,49 @@
                             CanUserSortColumns="True"
                             ItemsSource="{Binding Contacts}">
 
-                            <DataGrid.Columns>
-                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=LostFocus}" Width="Auto">
-                                    <DataGridCheckBoxColumn.Header>
-                                        <CheckBox Name="chkSelectAll" IsChecked="true" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
-                                    </DataGridCheckBoxColumn.Header>
-                                </DataGridCheckBoxColumn>
-                                <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                                <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=LostFocus}" Width="Auto">
+                                        <DataGridCheckBoxColumn.Header>
+                                            <CheckBox Name="chkSelectAll" IsChecked="true" Checked="chkSelectAll_Checked" Unchecked="chkSelectAll_Unchecked"></CheckBox>
+                                        </DataGridCheckBoxColumn.Header>
+                                    </DataGridCheckBoxColumn>
+                                    <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                    <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
 
-                        <StackPanel
+                            <StackPanel
                     Orientation="Horizontal"
                     Grid.Row="2">
-                            <Button
+                                <Button
                     Content="Agregar" 
                     HorizontalAlignment="Left"
                     Width="90"
                     Click="AddContact_Click"
                     Margin="0, 8, 10, 6"/>
 
-                        </StackPanel>
+                            </StackPanel>
 
 
 
-                    </Grid>
+                        </Grid>
 
-                    <Grid Grid.Row="2" Margin="0, 16, 0, 16">
+                        <Grid Grid.Row="2" Margin="0, 16, 0, 16">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock  HorizontalAlignment="Left"  TextWrapping="Wrap"  Text="Mensaje:"/>
+                            <TextBlock  HorizontalAlignment="Left"  TextWrapping="Wrap"  Text="Mensaje:"/>
 
-                        <TextBox 
+                            <TextBox 
                          Grid.Row="1" 
                          x:Name="tbMessageArea"
                          Grid.Column="0" 
@@ -116,7 +119,7 @@
                          Text="{Binding Message}" 
                          TextChanged="tbMessageArea_TextChanged"/>
 
-                        <Button 
+                            <Button 
                     x:Name="btnSendMessage"
                     Grid.Column="1" 
                         Grid.Row="1" 
@@ -130,91 +133,92 @@
                         HorizontalAlignment="Right" 
                         Width="117"/>
 
-                        <TextBlock  
+                            <TextBlock  
                     x:Name="TbCharactersLef"
                     Grid.Row="2"
                     HorizontalAlignment="Left"  
                     TextWrapping="Wrap"/>
 
+                        </Grid>
+
+
+
                     </Grid>
+                </TabItem>
 
-
-
-                </Grid>
-            </TabItem>
-
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Historial de Mensajes" 
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Historial de Mensajes" 
                                    FontSize="20"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid Margin="30">
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid Margin="30">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-
-                        <TextBlock 
+                        <Button 
+                        Click="RefreshMessages_OnClick"
                         Grid.Row="0"
-                        TextAlignment="Center"
+                        HorizontalAlignment="Left"
                         Margin="0, 0, 0 10"
-                        Text="Mensajes Enviados" FontWeight="Bold" />
+                        Content="Refrescar"/>
 
                         <DataGrid 
-                            x:Name="dTSentMessages"
                             Grid.Row="1"
                             AutoGenerateColumns="False" 
                             CanUserResizeColumns="True" 
                             CanUserAddRows="False" 
                             CanUserSortColumns="True"
-                            ItemsSource="{Binding SentMessages}">
+                            IsReadOnly="True"
+                            ItemsSource="{Binding Messages}">
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Nombre" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                                <DataGridTextColumn Header="Celular" Binding="{Binding Cellphone, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                <DataGridTextColumn Header="Mensaje" Binding="{Binding Content, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                <DataGridTextColumn Header="Fecha de operación" Binding="{Binding Date, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                                <DataGridTextColumn Header="Estado" Binding="{Binding Status, UpdateSourceTrigger=LostFocus}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
-                </Grid>
-            </TabItem>
+                    </Grid>
+                </TabItem>
 
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Configuración" FontSize="20"/>
-                    </StackPanel>
-                </TabItem.Header>
-                
-                <Grid
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Configuración" FontSize="20"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid
                     Margin="80">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Configuración" FontWeight="Bold" FontSize="20"/>
-                    <TextBlock Grid.Row="1" Text="Ingresa tu usuario y contraseña del servicio www.masmensajes.com.mx" Margin="0,16,0,16"/>
-                    
-                    <TextBlock Grid.Row="2" Text="Nombre de usuario:" HorizontalAlignment="Right" Margin="0,0,8,0"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.Username}"/>
-                    
-                    <TextBlock Grid.Row="3" Text="Password:" HorizontalAlignment="Right" Margin="0,8,8,0"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 8, 0, 0" Text="{Binding Source={StaticResource Settings}, Path=Default.Password}"/>
-                    
-                    <Button 
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Configuración" FontWeight="Bold" FontSize="20"/>
+                        <TextBlock Grid.Row="1" Text="Ingresa tu usuario y contraseña del servicio www.masmensajes.com.mx" Margin="0,16,0,16"/>
+
+                        <TextBlock Grid.Row="2" Text="Nombre de usuario:" HorizontalAlignment="Right" Margin="0,0,8,0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Source={StaticResource Settings}, Path=Default.Username}"/>
+
+                        <TextBlock Grid.Row="3" Text="Password:" HorizontalAlignment="Right" Margin="0,8,8,0"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 8, 0, 0" Text="{Binding Source={StaticResource Settings}, Path=Default.Password}"/>
+
+                        <Button 
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="100"
@@ -222,35 +226,40 @@
                         Click="SaveSettings_Click"
                         Content="Guardar"/>
 
-                </Grid>
-                
-            </TabItem>
-            
-        </TabControl>
-
-        <StatusBar Grid.Row="1">
-
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
                     </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
 
-            <StatusBarItem>
-                <ProgressBar Visibility="{Binding ShowProgress, Converter={StaticResource BoolToVisConverter}}" Height="20" IsIndeterminate="True" />
-            </StatusBarItem>
+                </TabItem>
 
-            <Separator Grid.Column="1" />
-            <StatusBarItem Grid.Column="2">
-                <TextBlock Name="TbMessage" Text="Chdiasdioajdasio dja dioasjdio ajdioasj d"/>
-            </StatusBarItem>
-        </StatusBar>
+            </TabControl>
 
-    </Grid>
+            <StatusBar Grid.Row="1">
+
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+
+                <StatusBarItem>
+                    <ProgressBar Visibility="{Binding ShowProgress, Converter={StaticResource BoolToVisConverter}}" Height="20" IsIndeterminate="True" />
+                </StatusBarItem>
+
+                <Separator Grid.Column="1" />
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock Name="TbMessage"/>
+                </StatusBarItem>
+            </StatusBar>
+
+        </Grid>
+
+    </xctk:BusyIndicator>
+
+
+        
 </Window>

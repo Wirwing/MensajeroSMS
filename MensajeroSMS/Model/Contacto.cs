@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace MensajeroSMS.Model
 {
@@ -34,6 +35,14 @@ namespace MensajeroSMS.Model
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+
+        public bool validCellphone()
+        {
+            //Accepts only 10 digits, no more no less. (Like Mike's answer)
+            var pattern = new Regex(@"(?<!\d)\d{10}(?!\d)");
+            return pattern.IsMatch(Cellphone);
         }
     }
 }

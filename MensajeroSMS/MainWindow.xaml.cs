@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -21,9 +22,10 @@ namespace MensajeroSMS
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly MasMensajesService service;
+        private readonly MasMensajesService _service;
 
         public ObservableCollection<Contacto> Contacts { get; set; }
+        public ObservableCollection<Message> Messages { get; set; }
 
         public bool ShowProgress { get; set; }
 
@@ -34,35 +36,79 @@ namespace MensajeroSMS
             ShowProgress = false;
 
             Contacts = new ObservableCollection<Contacto>();
-            service = new MasMensajesService();
+            Messages = new ObservableCollection<Message>();
+            _service = new MasMensajesService();
 
             InitializeComponent();
 
             btnSendMessage.IsEnabled = false;
             TbCharactersLef.Text = 0.ToString();
 
-            getSaldo();
+            Init();
 
         }
 
-        private void getSaldo()
+        private void Init()
+        {
+            GetSaldo();
+            GetMessages();
+        }
+
+        private void GetMessages()
         {
 
-            var username = Properties.Settings.Default.Username;
-            var password = Properties.Settings.Default.Password;
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, ea) =>
+            {
 
-            var sms = new SMSWSS10 { USER = username, PASS = password };
+                var sms = new MessageHistory { USER = "Wirwing", PASS = "63ac23" };
+                var mesages = _service.GetHistorialMessages(sms);
 
-            var credit = service.GetSaldo(sms);
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    Messages.Clear();
+                    foreach (var message in mesages)
+                        Messages.Add(message);
+                }));
 
-            var line = credit.Replace("\r", "").Replace("\n", "");
+            };
 
-            Debug.WriteLine(line);
+            worker.RunWorkerCompleted += (o, ea) =>
+            {
+                BusyIndicator.IsBusy = false;
+            };
 
-            TbMessage.Text = line;
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Cargando información...";
+            worker.RunWorkerAsync();
 
         }
 
+        private void GetSaldo()
+        {
+
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, ea) =>
+            {
+                var username = Properties.Settings.Default.Username;
+                var password = Properties.Settings.Default.Password;
+
+                var sms = new SMSWSS10 { USER = username, PASS = password };
+                var credit = _service.GetSaldo(sms);
+
+                Dispatcher.Invoke((Action)(() => TbMessage.Text = credit.Replace("\r", "").Replace("\n", "")));
+            };
+
+            worker.RunWorkerCompleted += (o, ea) =>
+            {
+                BusyIndicator.IsBusy = false;
+            };
+
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Cargando información...";
+            worker.RunWorkerAsync();
+
+        }
 
         private void Load_Contacts_Click(object sender, RoutedEventArgs e)
         {
@@ -73,28 +119,36 @@ namespace MensajeroSMS
             dlg.Filter = "Excel (.xlsx)|*.xlsx"; // Filter files by extension 
 
             // Show open file dialog box 
-            bool? result = dlg.ShowDialog();
+            var result = dlg.ShowDialog();
 
             // Process open file dialog box results 
-            if (result.HasValue && result.Value)
+            if (!result.HasValue || !result.Value) return;
+
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, ea) =>
             {
-                widow.IsEnabled = false;
-                ShowProgress = true;
-
                 var reader = new ExcelReader(dlg.FileName);
+                var contactsRead = reader.readData();
 
-                List<Contacto> contactsRead = reader.readData();
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    Contacts.Clear();
+                    foreach (var contacto in contactsRead)
+                        Contacts.Add(contacto);
 
-                Contacts.Clear();
-                contactsRead.ForEach(contact => { Contacts.Add(contact); });
-                LoadedContacts.Text = "Contactos Cargados (" + Contacts.Count + ")";
+                    LoadedContacts.Text = "Contactos Cargados (" + Contacts.Count + ")";
 
-                widow.IsEnabled = true;
-                ShowProgress = false;
+                }));
+            };
 
-            }
+            worker.RunWorkerCompleted += (o, ea) =>
+            {
+                BusyIndicator.IsBusy = false;
+            };
 
-            
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Cargando información...";
+            worker.RunWorkerAsync();
         }
 
         private void chkSelectAll_Checked(object sender, RoutedEventArgs e)
@@ -107,7 +161,7 @@ namespace MensajeroSMS
 
         private void chkSelectAll_Unchecked(object sender, RoutedEventArgs e)
         {
-            foreach (Contacto c in Contacts)
+            foreach (var c in Contacts)
             {
                 c.Selected = false;
             }
@@ -115,20 +169,45 @@ namespace MensajeroSMS
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            
-            List<Contacto> selected = Contacts.Where(contact => contact.Selected).ToList();
-            var numbers = selected.Select(contacto => contacto.Cellphone).ToList();
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, ea) =>
+            {
 
-            var username = Properties.Settings.Default.Username;
-            var password = Properties.Settings.Default.Password;
+                try
+                {
+                    var selected = Contacts.Where(contact => contact.Selected).ToList();
+                    var numbers = selected.Select(contacto =>
+                    {
+                        if (contacto.validCellphone())
+                            return contacto.Cellphone;
 
-            var sms = new SMSWSS10 { USER = username, PASS = password };
+                        throw new Exception("Número invalido para contacto " + contacto.Name);
+                    }).ToList();
 
-            sms.SetBatchMessage(numbers, Message);
+                    var username = Properties.Settings.Default.Username;
+                    var password = Properties.Settings.Default.Password;
 
-            service.BatchSend(sms);
+                    var sms = new SMSWSS10 { USER = username, PASS = password };
+                    sms.SetBatchMessage(numbers, Message);
 
-            getSaldo();
+                    _service.BatchSend(sms);
+
+                }
+                catch (Exception error)
+                {
+                    Dispatcher.Invoke((Action)(() => MessageBox.Show(error.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)));
+                }
+
+            };
+            worker.RunWorkerCompleted += (o, ea) =>
+            {
+                BusyIndicator.IsBusy = false;
+                Init();
+            };
+
+            BusyIndicator.IsBusy = true;
+            BusyIndicator.BusyContent = "Enviando mensaje...";
+            worker.RunWorkerAsync();
 
         }
 
@@ -149,7 +228,12 @@ namespace MensajeroSMS
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.Save();
-            getSaldo();
+            Init();
+        }
+
+        private void RefreshMessages_OnClick(object sender, RoutedEventArgs e)
+        {
+            GetMessages();
         }
     }
 }
